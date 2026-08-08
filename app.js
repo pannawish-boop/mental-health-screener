@@ -1,8 +1,7 @@
 // Database of questionnaires, scoring algorithms, and interpretations
-const tests = {
+    const tests = {
     phq9: {
         title: "Depression Screen (PHQ-9)",
-        scoringType: "sum",
         options: ["Not at all", "Several days", "More than half the days", "Nearly every day"],
         questions: [
             "Little interest or pleasure in doing things?",
@@ -17,7 +16,7 @@ const tests = {
         ],
         interpret: (answers) => {
             const score = answers.reduce((a, b) => a + b, 0);
-            const criticalFlag = answers[8] > 0; // Fixed index evaluation
+            const criticalFlag = answers[8] > 0; 
             
             let msg = `<h3>Total Score: ${score}</h3>`;
             if (score <= 4) msg += "<p><strong>Result:</strong> Minimal or no depression symptoms.</p>";
@@ -27,14 +26,13 @@ const tests = {
             else msg += "<p><strong>Result:</strong> Severe depression symptoms.</p>";
             
             if (criticalFlag) {
-                msg += "<br><div class='critical-alert' style='background-color:#fff3cd; color:#856404; padding:15px; border-left:5px solid #ffc107; margin-top:15px;'>⚠️ <strong>CRITICAL ALERT:</strong> You indicated experiencing thoughts of self-harm or suicide. Please connect with a professional, a trusted person, or a crisis helpline immediately.</div>";
+                msg += "<br><div style='background-color:#fff3cd; color:#856404; padding:15px; border-left:5px solid #ffc107; margin-top:15px;'>⚠️ <strong>CRITICAL ALERT:</strong> You indicated experiencing thoughts of self-harm or suicide. Please connect with a professional, a trusted person, or a crisis helpline immediately.</div>";
             }
             return msg;
         }
     },
     gad7: {
         title: "Anxiety Screen (GAD-7)",
-        scoringType: "sum",
         options: ["Not at all", "Several days", "More than half the days", "Nearly every day"],
         questions: [
             "Feeling nervous, anxious, or on edge?",
@@ -57,7 +55,6 @@ const tests = {
     },
     asrs: {
         title: "Adult ADHD Screen (ASRS v1.1)",
-        scoringType: "binary",
         options: ["Never", "Rarely", "Sometimes", "Often", "Very Often"],
         questions: [
             "How often do you have trouble wrapping up the final details of a project, once the challenging parts have been done?",
@@ -87,7 +84,6 @@ const tests = {
     },
     vanderbilt: {
         title: "Child ADHD Screen (Parent Vanderbilt Basis)",
-        scoringType: "binary",
         options: ["Never", "Occasionally", "Often", "Very Often"],
         questions: [
             "Fails to give close attention to details or makes careless mistakes in schoolwork.",
@@ -126,7 +122,6 @@ const tests = {
     },
     ad8: {
         title: "Cognitive Impairment Screen (AD8 Informant)",
-        scoringType: "sum",
         options: ["No, No Change", "Yes, A Change"],
         questions: [
             "Problems with judgment (e.g., problems making decisions, bad financial decisions, getting scammed)?",
@@ -151,7 +146,6 @@ const tests = {
     },
     ldAdult: {
         title: "Learning Disabilities Risk Checklist",
-        scoringType: "sum",
         options: ["No / Rarely", "Yes / Often"],
         questions: [
             "Do you struggle to read unfamiliar words aloud, or read significantly slower than your peers?",
@@ -164,8 +158,8 @@ const tests = {
             "Do you experience chronic structural difficulty managing time, estimating timelines, or meeting deadlines?"
         ],
         interpret: (answers) => {
-const score = answers.reduce((a, b) => a + b, 0);
-let msg = <h3>Identified Processing Vulnerabilities: ${score} / 8</h3>;
+            const score = answers.reduce((a, b) => a + b, 0);
+            let msg = `<h3>Identified Processing Vulnerabilities: ${score} / 8</h3>`;
 if (score <= 2) msg += "Result: Low Risk. Processing indicators are within typical baseline parameters.";
 else if (score <= 4) msg += "Result: Moderate Risk. Specific vulnerabilities present. May indicate targeted, isolated neurodivergent traits or structural learning discrepancies.";
 else msg += "Result: High Risk. Strong likelihood of an underlying processing variations (e.g., Dyslexia, Dyscalculia, Dysgraphia). Educational or neuropsychological testing is highly recommended.";
@@ -174,7 +168,6 @@ return msg;
 },
 tics: {
 title: "Motor & Vocal Tic Screener",
-scoringType: "logic",
 options: ["No", "Yes"],
 questions: [
 "Have you experienced sudden, rapid, recurrent, non-rhythmic motor movements (e.g., eye blinking, head jerking, shoulder shrugging)?",
@@ -185,8 +178,8 @@ questions: [
 interpret: (answers) => {
 const hasMotor = answers[0] === 1;
 const hasVocal = answers[1] === 1;
-const chronicDuration = answers[2] === 1;
-const onsetBefore18 = answers[3] === 1;
+const chronicDuration = answers === 1;
+const onsetBefore18 = answers === 1;
 let msg = "Tic Profile Interpretation:";
 if (hasMotor && hasVocal && chronicDuration && onsetBefore18) {
 msg += "Result: Matches clinical criteria pattern for Tourette's Disorder framework. Evaluation by a neurologist or psychiatrist is advised.";
@@ -205,7 +198,7 @@ function switchTest() {
 const selectedKey = document.getElementById("test-selector").value;
 loadTest(selectedKey);
 document.getElementById("results-card").classList.add("hidden");
-}
+} [2] 
 function loadTest(testKey) {
 const test = tests[testKey];
 const container = document.getElementById("questions-container");
@@ -225,7 +218,7 @@ const selector = document.getElementById("test-selector");
 const currentKey = selector.value;
 const currentTest = tests[currentKey];
 const answers = [];
-let allAnswered = true;
+let allAnswered = true; [3] 
 for (let i = 0; i < currentTest.questions.length; i++) {
 const selected = document.querySelector(input[name="q${i}"]:checked);
 if (!selected) {
@@ -242,7 +235,7 @@ const interpretationHtml = currentTest.interpret(answers);
 document.getElementById("interpretation-display").innerHTML = interpretationHtml;
 document.getElementById("results-card").classList.remove("hidden");
 document.getElementById("results-card").scrollIntoView({ behavior: 'smooth' });
-}
+} [4] 
 window.onload = () => {
 const selector = document.getElementById("test-selector");
 if(selector) {
