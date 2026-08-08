@@ -1,6 +1,3 @@
-Here is the complete, comprehensive app.js file dataset. It features all seven screening modules (Depression, Anxiety, Adult ADHD, Child ADHD, MCI/Dementia, Learning Disabilities, and Tics).
-Replace your existing app.js file completely with this code. It contains the data structures, scoring thresholds, binary logic arrays, and safety flags required to make your web app fully interactive.
-
 // Database of questionnaires, scoring algorithms, and interpretationsconst tests = {
     phq9: {
         title: "Depression Screen (PHQ-9)",
@@ -166,7 +163,6 @@ Replace your existing app.js file completely with this code. It contains the dat
             "Do you struggle to perform basic mental math calculations or process spatial numerical intervals?",
             "Do you frequently reverse numbers, letters, or spatial symbols (e.g., mixing up 6/9 or b/d)?",
             "Do you have trouble cleanly copying notes from a board or logically organizing thoughts on paper?",
-
 "Do you struggle to cleanly track or execute consecutive multi-step spoken instructions?",
 "Do you experience chronic structural difficulty managing time, estimating timelines, or meeting deadlines?"
 ],
