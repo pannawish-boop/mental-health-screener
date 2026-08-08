@@ -93,6 +93,7 @@ gad7: {
     },    
 };
 
+
 // Function to inject questions into the HTML page
 function loadTest(testKey) {
     const test = tests[testKey];
@@ -113,31 +114,53 @@ function loadTest(testKey) {
         container.innerHTML += html;
     });
 }
-
-// Function to read selected radio values and execute the scoring algorithm
-function calculateScore() {
-    const currentTest = tests[document.getElementById("test-selector").value];
-    let totalScore = 0;
-    let criticalFlag = false;
-
-    currentTest.questions.forEach((_, qIdx) => {
-        const selected = document.querySelector(`input[name="q${qIdx}"]:checked`);
-        if (selected) {
-            const val = parseInt(selected.value);
-            totalScore += val;
-            
-            // Safety check for PHQ-9 Question 9 (index 8)
-            if (qIdx === 8 && val > 0) {
-                criticalFlag = true;
-            }
-        }
-    });
-
-    // Display the results smoothly on the UI
-    document.getElementById("score-display").innerText = `Total Score: ${totalScore}`;
-    document.getElementById("interpretation-display").innerHTML = currentTest.interpret(totalScore, criticalFlag);
-    document.getElementById("results-card").classList.remove("hidden");
+function switchTest() {
+    const selectedKey = document.getElementById("test-selector").value;
+    loadTest(selectedKey);
+    document.getElementById("results-card").classList.add("hidden");
 }
+function loadTest(testKey) {
+const test = tests[testKey];
+const container = document.getElementById("questions-container");
+container.innerHTML = "";
+test.questions.forEach((qText, qIdx) => {
+let html = <div class="question-block"><p class="question-text"><strong>Q${qIdx + 1}.</strong> ${qText}</p><div class="options-group">;
+test.options.forEach((optText, oIdx) => {
+html += `
+`;
+});
+html += </div></div>;
+container.innerHTML += html;
+}
+function calculateScore() {
+const selector = document.getElementById("test-selector");
+const currentKey = selector.value;
+const currentTest = tests[currentKey];
+const answers = [];
+let allAnswered = true;
+for (let i = 0; i < currentTest.questions.length; i++) {
+const selected = document.querySelector(input[name="q${i}"]:checked);
+if (!selected) {
+allAnswered = false;
+break;
+}
+answers.push(parseInt(selected.value));
+}
+if (!allAnswered) {
+alert("Please answer all questions before generating your screening report.");
+return;
+}
+const interpretationHtml = currentTest.interpret(answers);
+document.getElementById("interpretation-display").innerHTML = interpretationHtml;
+document.getElementById("results-card").classList.remove("hidden");
+document.getElementById("results-card").scrollIntoView({ behavior: 'smooth' });
+}
+window.onload = () => {
+const selector = document.getElementById("test-selector");
+if(selector) {
+loadTest(selector.value);
+}
+};
 
 // Initialize on page load
-window.onload = () => loadTest('phq9');
+// window.onload = () => loadTest('phq9');
