@@ -17,12 +17,16 @@
             <option value="phq9">Depression Screen (PHQ-9)</option>
             <option value="gad7">Anxiety Screen (GAD-7)</option>
             <option value="asrs">Adult ADHD (ASRS v1.1)</option>
+            <option value="vanderbilt">Child ADHD (Parent Vanderbilt Basis)</option>
+            <option value="ad8">Cognitive Impairment Screen (AD8 Informant)</option>
+            <option value="ldAdult">Learning Disabilities Risk Checklist</option>
+            <option value="tics">Motor & Vocal Tic Screener</option>
         </select>
 
         <!-- Interactive Form Area -->
         <form id="quiz-form">
             <div id="questions-container">
-                <!-- JavaScript will dynamically inject questions here -->
+                <!-- JavaScript dynamically injects questions here -->
             </div>
             <button type="button" onclick="calculateScore()">Calculate My Result</button>
         </form>
@@ -30,9 +34,9 @@
         <!-- Results Area -->
         <div id="results-card" class="hidden">
             <h2>Your Result</h2>
-            <div id="score-display"></div>
             <div id="interpretation-display"></div>
-            <button onclick="window.print()">🖨️ Print Results for Your Doctor</button>
+            <br>
+            <button type="button" onclick="window.print()">🖨️ Print Results for Your Doctor</button>
         </div>
     </main>
     <script src="app.js"></script>
