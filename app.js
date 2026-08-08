@@ -1,4 +1,5 @@
-// Database of questionnaires, scoring algorithms, and interpretationsconst tests = {
+// Database of questionnaires, scoring algorithms, and interpretations
+const tests = {
     phq9: {
         title: "Depression Screen (PHQ-9)",
         scoringType: "sum",
