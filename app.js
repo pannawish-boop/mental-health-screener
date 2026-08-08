@@ -198,7 +198,7 @@ function switchTest() {
 const selectedKey = document.getElementById("test-selector").value;
 loadTest(selectedKey);
 document.getElementById("results-card").classList.add("hidden");
-} [2] 
+}
 function loadTest(testKey) {
 const test = tests[testKey];
 const container = document.getElementById("questions-container");
@@ -235,7 +235,7 @@ const interpretationHtml = currentTest.interpret(answers);
 document.getElementById("interpretation-display").innerHTML = interpretationHtml;
 document.getElementById("results-card").classList.remove("hidden");
 document.getElementById("results-card").scrollIntoView({ behavior: 'smooth' });
-} [4] 
+} 
 window.onload = () => {
 const selector = document.getElementById("test-selector");
 if(selector) {
