@@ -15,20 +15,82 @@ const tests = {
             "Thoughts that you would be better off dead or hurting yourself?"
         ],
         options: ["Not at all", "Several days", "More than half the days", "Nearly every day"],
-        interpret: (score, criticalFlag) => {
-            let msg = "";
-            if (score <= 4) msg = "Minimal depression symptoms.";
-            else if (score <= 9) msg = "Mild depression symptoms.";
-            else if (score <= 14) msg = "Moderate depression symptoms.";
-            else if (score <= 19) msg = "Moderately severe depression symptoms.";
-            else msg = "Severe depression symptoms.";
+        interpret: (answers) => {
+            let score = 0;
+            for (let i = 0; i < answers.length; i++) {
+                score += answers[i];
+            }
+            
+            // Safe index checking for Question 9 (index 8)
+            const criticalFlag = answers[8] > 0; 
+            
+            let msg = `<h3>Total Score: ${score}</h3>`;
+            if (score <= 4) msg += "<p><strong>Result:</strong> Minimal or no depression symptoms.</p>";
+            else if (score <= 9) msg += "<p><strong>Result:</strong> Mild depression symptoms.</p>";
+            else if (score <= 14) msg += "<p><strong>Result:</strong> Moderate depression symptoms.</p>";
+            else if (score <= 19) msg += "<p><strong>Result:</strong> Moderately severe depression symptoms.</p>";
+            else msg += "<p><strong>Result:</strong> Severe depression symptoms.</p>";
             
             if (criticalFlag) {
-                msg += "<br><br>🚨 <strong>Critical Note:</strong> You indicated thoughts of self-harm. Please contact a professional or a crisis helpline immediately.";
+                msg += "<br><div style='background-color:#fff3cd; color:#856404; padding:15px; border-left:5px solid #ffc107; margin-top:15px;'>⚠️ <strong>CRITICAL ALERT:</strong> You indicated experiencing thoughts of self-harm or suicide. Please connect with a professional, a trusted person, or a crisis helpline immediately.</div>";
             }
             return msg;
         }
-    }
+   },
+gad7: {
+        title: "Anxiety Screen (GAD-7)",
+        options: ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        questions: [
+            "Feeling nervous, anxious, or on edge?",
+            "Not being able to stop or control worrying?",
+            "Worrying too much about different things?",
+            "Trouble relaxing?",
+            "Being so restless that it is hard to sit still?",
+            "Becoming easily annoyed or irritable?",
+            "Feeling afraid as if something awful might happen?"
+        ],
+        interpret: (answers) => {
+            let score = 0;
+            for (let i = 0; i < answers.length; i++) {
+                score += answers[i];
+            }
+            let msg = `<h3>Total Score: ${score}</h3>`;
+            if (score <= 4) msg += "<p><strong>Result:</strong> Minimal or no anxiety symptoms.</p>";
+            else if (score <= 9) msg += "<p><strong>Result:</strong> Mild anxiety symptoms.</p>";
+            else if (score <= 14) msg += "<p><strong>Result:</strong> Moderate anxiety symptoms. A clinical consultation is recommended.</p>";
+            else msg += "<p><strong>Result:</strong> Severe anxiety symptoms. Professional evaluation is strongly recommended.</p>";
+            return msg;
+        }
+    },
+    asrs: {
+        title: "Adult ADHD Screen (ASRS v1.1)",
+        options: ["Never", "Rarely", "Sometimes", "Often", "Very Often"],
+        questions: [
+            "How often do you have trouble wrapping up the final details of a project, once the challenging parts have been done?",
+            "How often do you have difficulty getting things in order when you have to do a task that requires organization?",
+            "How often do you have problems remembering appointments or obligations?",
+            "How often, when you have a task that requires a lot of thought, do you avoid or delay getting started?",
+            "How often do you fidget or squirm with your hands or feet when you have to sit down for a long time?",
+            "How often do you feel overly active and compelled to do things, as if you were driven by a motor?"
+        ],
+        interpret: (answers) => {
+            let positiveTriggers = 0;
+            if (answers[0] >= 2) positiveTriggers++;
+            if (answers[1] >= 2) positiveTriggers++;
+            if (answers[2] >= 2) positiveTriggers++;
+            if (answers[3] >= 3) positiveTriggers++;
+            if (answers[4] >= 3) positiveTriggers++;
+            if (answers[5] >= 3) positiveTriggers++;
+
+            let msg = `<h3>Positive Indicators: ${positiveTriggers} / 6</h3>`;
+            if (positiveTriggers >= 4) {
+                msg += "<p><strong>Result:</strong> Positive Screen. Your symptoms highly match patterns seen in adult ADHD. A formal clinical interview with a specialist is advised.</p>";
+            } else {
+                msg += "<p><strong>Result:</strong> Negative Screen. Your symptoms do not currently meet the standard baseline threshold for adult ADHD framework evaluation.</p>";
+            }
+            return msg;
+        }
+    },    
 };
 
 // Function to inject questions into the HTML page
