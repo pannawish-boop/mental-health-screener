@@ -1,5 +1,5 @@
 // Database of questionnaires, scoring algorithms, and interpretations
-    const tests = {
+const tests = {
     phq9: {
         title: "Depression Screen (PHQ-9)",
         options: ["Not at all", "Several days", "More than half the days", "Nearly every day"],
@@ -16,6 +16,7 @@
         ],
         interpret: (answers) => {
             const score = answers.reduce((a, b) => a + b, 0);
+            // Check index 8 specifically for self-harm thoughts
             const criticalFlag = answers[8] > 0; 
             
             let msg = `<h3>Total Score: ${score}</h3>`;
@@ -66,9 +67,11 @@
         ],
         interpret: (answers) => {
             let positiveTriggers = 0;
+            // Questions 1-3 trigger on Sometimes, Often, or Very Often (values 2, 3, 4)
             for (let i = 0; i <= 2; i++) {
                 if (answers[i] >= 2) positiveTriggers++;
             }
+            // Questions 4-6 trigger on Often or Very Often (values 3, 4)
             for (let i = 3; i <= 5; i++) {
                 if (answers[i] >= 3) positiveTriggers++;
             }
@@ -157,12 +160,12 @@
             "Do you struggle to cleanly track or execute consecutive multi-step spoken instructions?",
             "Do you experience chronic structural difficulty managing time, estimating timelines, or meeting deadlines?"
         ],
-        interpret: (answers) => {
-            const score = answers.reduce((a, b) => a + b, 0);
-            let msg = `<h3>Identified Processing Vulnerabilities: ${score} / 8</h3>`;
+interpret: (answers) => {
+const score = answers.reduce((a, b) => a + b, 0);
+let msg = <h3>Identified Processing Vulnerabilities: ${score} / 8</h3>;
 if (score <= 2) msg += "Result: Low Risk. Processing indicators are within typical baseline parameters.";
 else if (score <= 4) msg += "Result: Moderate Risk. Specific vulnerabilities present. May indicate targeted, isolated neurodivergent traits or structural learning discrepancies.";
-else msg += "Result: High Risk. Strong likelihood of an underlying processing variations (e.g., Dyslexia, Dyscalculia, Dysgraphia). Educational or neuropsychological testing is highly recommended.";
+else msg += "Result: High Risk. Strong likelihood of underlying processing variations (e.g., Dyslexia, Dyscalculia, Dysgraphia). Educational or neuropsychological testing is highly recommended.";
 return msg;
 }
 },
@@ -178,8 +181,8 @@ questions: [
 interpret: (answers) => {
 const hasMotor = answers[0] === 1;
 const hasVocal = answers[1] === 1;
-const chronicDuration = answers === 1;
-const onsetBefore18 = answers === 1;
+const chronicDuration = answers[2] === 1;
+const onsetBefore18 = answers[3] === 1;
 let msg = "Tic Profile Interpretation:";
 if (hasMotor && hasVocal && chronicDuration && onsetBefore18) {
 msg += "Result: Matches clinical criteria pattern for Tourette's Disorder framework. Evaluation by a neurologist or psychiatrist is advised.";
@@ -218,7 +221,7 @@ const selector = document.getElementById("test-selector");
 const currentKey = selector.value;
 const currentTest = tests[currentKey];
 const answers = [];
-let allAnswered = true; [3] 
+let allAnswered = true;
 for (let i = 0; i < currentTest.questions.length; i++) {
 const selected = document.querySelector(input[name="q${i}"]:checked);
 if (!selected) {
@@ -235,10 +238,12 @@ const interpretationHtml = currentTest.interpret(answers);
 document.getElementById("interpretation-display").innerHTML = interpretationHtml;
 document.getElementById("results-card").classList.remove("hidden");
 document.getElementById("results-card").scrollIntoView({ behavior: 'smooth' });
-} 
+}
 window.onload = () => {
 const selector = document.getElementById("test-selector");
 if(selector) {
 loadTest(selector.value);
 }
 };
+
+
