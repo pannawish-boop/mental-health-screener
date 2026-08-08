@@ -164,9 +164,9 @@ const tests = {
             "Do you struggle to perform basic mental math calculations or process spatial numerical intervals?",
             "Do you frequently reverse numbers, letters, or spatial symbols (e.g., mixing up 6/9 or b/d)?",
             "Do you have trouble cleanly copying notes from a board or logically organizing thoughts on paper?",
-"Do you struggle to cleanly track or execute consecutive multi-step spoken instructions?",
-"Do you experience chronic structural difficulty managing time, estimating timelines, or meeting deadlines?"
-],
+            "Do you struggle to cleanly track or execute consecutive multi-step spoken instructions?",
+            "Do you experience chronic structural difficulty managing time, estimating timelines, or meeting deadlines?"
+        ],
 interpret: (answers) => {
 const score = answers.reduce((a, b) => a + b, 0);
 let msg = <h3>Identified Processing Vulnerabilities: ${score} / 8</h3>;
@@ -261,4 +261,3 @@ if(selector) {
 loadTest(selector.value);
 }
 };
-
