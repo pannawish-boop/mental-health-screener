@@ -3,37 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mental Health Screener App</title>
+    <title>Mental Health Self-Assessment Screener</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <main class="container">
         <h1>Mental Health Self-Assessment Screener</h1>
         <p class="disclaimer"><strong>Disclaimer:</strong> This tool is for educational screening purposes only. Data is processed strictly in your browser and is never saved online.</p>
 
+        <!-- Dropdown to select the specific test -->
         <label for="test-selector">Select a Screening Tool:</label>
         <select id="test-selector" onchange="switchTest()">
             <option value="phq9">Depression Screen (PHQ-9)</option>
             <option value="gad7">Anxiety Screen (GAD-7)</option>
             <option value="asrs">Adult ADHD (ASRS v1.1)</option>
-            <option value="vanderbilt">Child ADHD (Parent Vanderbilt Basis)</option>
-            <option value="ad8">Cognitive Impairment Screen (AD8 Informant)</option>
-            <option value="ldAdult">Learning Disabilities Risk Checklist</option>
-            <option value="tics">Motor & Vocal Tic Screener</option>
         </select>
 
+        <!-- Interactive Form Area -->
         <form id="quiz-form">
-            <div id="questions-container"></div>
+            <div id="questions-container">
+                <!-- JavaScript will dynamically inject questions here -->
+            </div>
             <button type="button" onclick="calculateScore()">Calculate My Result</button>
         </form>
 
+        <!-- Results Area -->
         <div id="results-card" class="hidden">
             <h2>Your Result</h2>
+            <div id="score-display"></div>
             <div id="interpretation-display"></div>
-            <br>
-            <button type="button" onclick="window.print()">🖨️ Print Results for Your Doctor</button>
+            <button onclick="window.print()">🖨️ Print Results for Your Doctor</button>
         </div>
-    </div>
+    </main>
     <script src="app.js"></script>
 </body>
 </html>
