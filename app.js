@@ -15,8 +15,12 @@ const tests = {
             "Thoughts that you would be better off dead or of hurting yourself in some way?"
         ],
         interpret: (answers) => {
-            const score = answers.reduce((a, b) => a + b, 0);
-            // Check index 8 specifically for self-harm thoughts
+            let score = 0;
+            for (let i = 0; i < answers.length; i++) {
+                score += answers[i];
+            }
+            
+            // Safe index checking for Question 9 (index 8)
             const criticalFlag = answers[8] > 0; 
             
             let msg = `<h3>Total Score: ${score}</h3>`;
@@ -45,7 +49,10 @@ const tests = {
             "Feeling afraid as if something awful might happen?"
         ],
         interpret: (answers) => {
-            const score = answers.reduce((a, b) => a + b, 0);
+            let score = 0;
+            for (let i = 0; i < answers.length; i++) {
+                score += answers[i];
+            }
             let msg = `<h3>Total Score: ${score}</h3>`;
             if (score <= 4) msg += "<p><strong>Result:</strong> Minimal or no anxiety symptoms.</p>";
             else if (score <= 9) msg += "<p><strong>Result:</strong> Mild anxiety symptoms.</p>";
@@ -67,14 +74,12 @@ const tests = {
         ],
         interpret: (answers) => {
             let positiveTriggers = 0;
-            // Questions 1-3 trigger on Sometimes, Often, or Very Often (values 2, 3, 4)
-            for (let i = 0; i <= 2; i++) {
-                if (answers[i] >= 2) positiveTriggers++;
-            }
-            // Questions 4-6 trigger on Often or Very Often (values 3, 4)
-            for (let i = 3; i <= 5; i++) {
-                if (answers[i] >= 3) positiveTriggers++;
-            }
+            if (answers[0] >= 2) positiveTriggers++;
+            if (answers[1] >= 2) positiveTriggers++;
+            if (answers[2] >= 2) positiveTriggers++;
+            if (answers[3] >= 3) positiveTriggers++;
+            if (answers[4] >= 3) positiveTriggers++;
+            if (answers[5] >= 3) positiveTriggers++;
 
             let msg = `<h3>Positive Indicators: ${positiveTriggers} / 6</h3>`;
             if (positiveTriggers >= 4) {
@@ -103,18 +108,19 @@ const tests = {
         interpret: (answers) => {
             let inattentiveCount = 0;
             let hyperactiveCount = 0;
-
-            for (let i = 0; i <= 4; i++) {
-                if (answers[i] >= 2) inattentiveCount++;
-            }
-            for (let i = 5; i <= 9; i++) {
-                if (answers[i] >= 2) hyperactiveCount++;
-            }
-
+            if (answers[0] >= 2) inattentiveCount++;
+            if (answers[1] >= 2) inattentiveCount++;
+            if (answers[2] >= 2) inattentiveCount++;
+            if (answers[3] >= 2) inattentiveCount++;
+            if (answers[4] >= 2) inattentiveCount++;
+            if (answers[5] >= 2) hyperactiveCount++;
+            if (answers[6] >= 2) hyperactiveCount++;
+            if (answers[7] >= 2) hyperactiveCount++;
+            if (answers[8] >= 2) hyperactiveCount++;
+            if (answers[9] >= 2) hyperactiveCount++;
             let msg = `<h3>Subtype Analysis Matrix:</h3>`;
             msg += `<p>Inattentive Markers flagged: ${inattentiveCount} / 5</p>`;
             msg += `<p>Hyperactive-Impulsive Markers flagged: ${hyperactiveCount} / 5</p>`;
-
             if (inattentiveCount >= 3 || hyperactiveCount >= 3) {
                 msg += "<p><strong>Result:</strong> Screening Indicator Triggered. Behavioral responses suggest patterns aligned with pediatric ADHD. Consider reviewing these metrics with a pediatrician or child psychologist.</p>";
             } else {
@@ -137,7 +143,10 @@ const tests = {
             "Daily problems with thinking and/or memory?"
         ],
         interpret: (answers) => {
-            const score = answers.reduce((a, b) => a + b, 0);
+            let score = 0;
+            for (let i = 0; i < answers.length; i++) {
+                score += answers[i];
+            }
             let msg = `<h3>Total 'Yes' Changes: ${score} / 8</h3>`;
             if (score >= 2) {
                 msg += "<p><strong>Result:</strong> Cognitive Impairment Detected. Scores indicate noticeable shifts in memory or functional capacity. Further medical evaluation (e.g., MoCA/MMSE testing) is recommended to assess for MCI or early dementia.</p>";
