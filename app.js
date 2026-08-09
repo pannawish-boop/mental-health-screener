@@ -155,12 +155,12 @@ document.getElementById("interpretation-display").innerHTML = interpretationHtml
 document.getElementById("results-card").classList.remove("hidden");
 document.getElementById("results-card").scrollIntoView({ behavior: 'smooth' });
 }
-// window.onload = () => {
-// const selector = document.getElementById("test-selector");
-// if(selector) {
-// loadTest(selector.value);
-// }
-// };
+window.onload = () => {
+const selector = document.getElementById("test-selector");
+if(selector) {
+loadTest(selector.value);
+}
+};
 
 // Initialize on page load
-window.onload = () => loadTest('phq9');
+// window.onload = () => loadTest('phq9');
