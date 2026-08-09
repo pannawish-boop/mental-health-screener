@@ -1,18 +1,18 @@
-// Database of questionnaires, scoring algorithms, and interpretations
+// ฐานข้อมูลแบบสอบถาม อัลกอริทึมการให้คะแนน และการแปลผล
 const tests = {
     phq9: {
-        title: "Depression Screen (PHQ-9)",
-        options: ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        title: "แบบประเมินโรคซึมเศร้า (PHQ-9)",
+        options: ["ไม่มีเลย", "มีบางวัน", "มีบ่อย", "มีทุกวัน"],
         questions: [
-            "Little interest or pleasure in doing things?",
-            "Feeling down, depressed, or hopeless?",
-            "Trouble falling or staying asleep, or sleeping too much?",
-            "Feeling tired or having little energy?",
-            "Poor appetite or overeating?",
-            "Feeling bad about yourself — or that you are a failure or have let yourself or your family down?",
-            "Trouble concentrating on things, such as reading the newspaper or watching television?",
-            "Moving or speaking so slowly that other people could have noticed? Or the opposite — being so fidgety or restless that you have been moving around a lot more than usual?",
-            "Thoughts that you would be better off dead or of hurting yourself in some way?"
+            "เบื่อ ทำอะไรก็ไม่เพลิดเพลิน",
+            "ไม่สบายใจ เศร้า หรือท้อแท้",
+            "หลับยาก หรือหลับๆ ตื่นๆ หรือหลับมากเกินไป",
+            "เหนื่อยง่าย หรือไม่ค่อยมีแรง",
+            "เบื่ออาหาร หรือกินมากเกินไป",
+            "รู้สึกไม่ดีกับตัวเอง คิดว่าตัวเองล้มเหลว หรือทำให้ตนเองหรือครอบครัวผิดหวัง",
+            "สมาธิไม่ดีเวลาทำอะไร เช่น ดูโทรทัศน์ ฟังวิทยุ หรือทำงานที่ต้องใช้ความตั้งใจ",
+            "พูดหรือทำอะไรช้าจนคนอื่นสังเกตเห็นได้ หรือกระสับกระส่ายจนไม่อาจอยู่นิ่งได้เหมือนเคย",
+            "คิดทำร้ายตนเอง หรือคิดว่าถ้าตายไปคงจะดี"
         ],
         interpret: (answers) => {
             let score = 0;
@@ -20,64 +20,61 @@ const tests = {
                 score += answers[i];
             }
             
-            // Safe manual tracking to avoid bracket array errors
             const lastAnswerIndex = answers.length - 1;
             const selfHarmValue = answers[lastAnswerIndex];
             const criticalFlag = selfHarmValue > 0;
             
-            let msg = `<h3>Total Score: ${score}</h3>`;
-            if (score <= 4) msg += "<p><strong>Result:</strong> Minimal or no depression symptoms.</p>";
-            else if (score <= 9) msg += "<p><strong>Result:</strong> Mild depression symptoms.</p>";
-            else if (score <= 14) msg += "<p><strong>Result:</strong> Moderate depression symptoms.</p>";
-            else if (score <= 19) msg += "<p><strong>Result:</strong> Moderately severe depression symptoms.</p>";
-            else msg += "<p><strong>Result:</strong> Severe depression symptoms.</p>";
+            let msg = `<h3>คะแนนรวม: ${score}</h3>`;
+            if (score <= 4) msg += "<p><strong>ผลลัพธ์:</strong> ไม่มีอาการซึมเศร้าหรือมีอาการในระดับน้อยมาก</p>";
+            else if (score <= 9) msg += "<p><strong>ผลลัพธ์:</strong> มีอาการซึมเศร้าในระดับน้อย</p>";
+            else if (score <= 14) msg += "<p><strong>ผลลัพธ์:</strong> มีอาการซึมเศร้าในระดับปานกลาง</p>";
+            else if (score <= 19) msg += "<p><strong>ผลลัพธ์:</strong> มีอาการซึมเศร้าในระดับค่อนข้างรุนแรง</p>";
+            else msg += "<p><strong>ผลลัพธ์:</strong> มีอาการซึมเศร้าในระดับรุนแรง</p>";
             
             if (criticalFlag) {
-                msg += "<br><div style='background-color:#fff3cd; color:#856404; padding:15px; border-left:5px solid #ffc107; margin-top:15px;'>⚠️ <strong>CRITICAL ALERT:</strong> You indicated experiencing thoughts of self-harm or suicide. Please connect with a professional, a trusted person, or a crisis helpline immediately.</div>";
+                msg += "<br><div style='background-color:#fff3cd; color:#856404; padding:15px; border-left:5px solid #ffc107; margin-top:15px;'>⚠️ <strong>คำเตือนเร่งด่วน:</strong> คุณระบุว่ามีความคิดที่จะทำร้ายตนเองหรือฆ่าตัวตาย โปรดติดต่อขอความช่วยเหลือจากผู้เชี่ยวชาญ คนที่คุณไว้วางใจ หรือสายด่วนสุขภาพจิต (1323) ทันที</div>";
             }
             return msg;
         }
     },
     gad7: {
-        title: "Anxiety Screen (GAD-7)",
-        options: ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+        title: "แบบประเมินวิตกกังวล (GAD-7)",
+        options: ["ไม่มีเลย", "มีบางวัน", "มีเกินครึ่งวัน", "มีเกือบทุกวัน"],
         questions: [
-            "Feeling nervous, anxious, or on edge?",
-            "Not being able to stop or control worrying?",
-            "Worrying too much about different things?",
-            "Trouble relaxing?",
-            "Being so restless that it is hard to sit still?",
-            "Becoming easily annoyed or irritable?",
-            "Feeling afraid as if something awful might happen?"
+            "รู้สึกกระวนกระวาย วิตกกังวล หรือว้าวุ่นใจ",
+            "ไม่สามารถหยุดหรือควบคุมความกังวลได้",
+            "กังวลมากเกินไปในหลายๆ เรื่อง",
+            "ทำตัวให้ผ่อนคลายได้ยาก",
+            "รู้สึกกระสับกระส่ายจนไม่สามารถนั่งนิ่งๆ ได้",
+            "กลายเป็นคนหงุดหงิดง่าย",
+            "รู้สึกกลัวเหมือนจะมีอะไรที่น่ากลัวเกิดขึ้น"
         ],
         interpret: (answers) => {
             let score = 0;
             for (let i = 0; i < answers.length; i++) {
                 score += answers[i];
             }
-            let msg = `<h3>Total Score: ${score}</h3>`;
-            if (score <= 4) msg += "<p><strong>Result:</strong> Minimal or no anxiety symptoms.</p>";
-            else if (score <= 9) msg += "<p><strong>Result:</strong> Mild anxiety symptoms.</p>";
-            else if (score <= 14) msg += "<p><strong>Result:</strong> Moderate anxiety symptoms. A clinical consultation is recommended.</p>";
-            else msg += "<p><strong>Result:</strong> Severe anxiety symptoms. Professional evaluation is strongly recommended.</p>";
+            let msg = `<h3>คะแนนรวม: ${score}</h3>`;
+            if (score <= 4) msg += "<p><strong>ผลลัพธ์:</strong> ไม่มีอาการวิตกกังวลหรือมีอาการน้อยมาก</p>";
+            else if (score <= 9) msg += "<p><strong>ผลลัพธ์:</strong> มีอาการวิตกกังวลในระดับน้อย</p>";
+            else if (score <= 14) msg += "<p><strong>ผลลัพธ์:</strong> มีอาการวิตกกังวลในระดับปานกลาง ควรปรึกษาผู้เชี่ยวชาญ</p>";
+            else msg += "<p><strong>ผลลัพธ์:</strong> มีอาการวิตกกังวลในระดับรุนแรง ควรพบแพทย์เพื่อประเมินอย่างละเอียด</p>";
             return msg;
         }
     },
     asrs: {
-        title: "Adult ADHD Screen (ASRS v1.1)",
-        options: ["Never", "Rarely", "Sometimes", "Often", "Very Often"],
+        title: "แบบคัดกรองสมาธิสั้นในผู้ใหญ่ (ASRS v1.1)",
+        options: ["ไม่เคย", "นานๆ ครั้ง", "บางครั้ง", "บ่อยครั้ง", "บ่อยมาก"],
         questions: [
-            "How often do you have trouble wrapping up the final details of a project, once the challenging parts have been done?",
-            "How often do you have difficulty getting things in order when you have to do a task that requires organization?",
-            "How often do you have problems remembering appointments or obligations?",
-            "How often, when you have a task that requires a lot of thought, do you avoid or delay getting started?",
-            "How often do you fidget or squirm with your hands or feet when you have to sit down for a long time?",
-            "How often do you feel overly active and compelled to do things, as if you were driven by a motor?"
+            "คุณทำงานชิ้นสุดท้ายที่ท้าทายเสร็จแล้ว แต่กลับมีปัญหาในการเก็บรายละเอียดสุดท้ายของงานบ่อยแค่ไหน?",
+            "คุณมีปัญหาในการจัดระเบียบสิ่งต่างๆ เมื่อต้องทำงานที่ต้องมีการวางแผนบ่อยแค่ไหน?",
+            "คุณมีปัญหาในการจดจำการนัดหมายหรือภาระผูกพันบ่อยแค่ไหน?",
+            "เมื่อมีงานที่ต้องใช้ความคิดมาก คุณมักจะหลีกเลี่ยงหรือผัดวันประกันพรุ่งบ่อยแค่ไหน?",
+            "คุณขยับมือหรือเท้าไปมา หรือนั่งไม่ติดที่เมื่อต้องนั่งนานๆ บ่อยแค่ไหน?",
+            "คุณรู้สึกกระตือรือร้นมากเกินไปและถูกผลักดันให้ทำสิ่งต่างๆ ราวกับว่าถูกขับเคลื่อนด้วยมอเตอร์บ่อยแค่ไหน?"
         ],
         interpret: (answers) => {
             let positiveTriggers = 0;
-            
-            // Loop version completely avoids markdown bracket issues
             for (let i = 0; i < answers.length; i++) {
                 if (i <= 2 && answers[i] >= 2) {
                     positiveTriggers++;
@@ -85,35 +82,33 @@ const tests = {
                     positiveTriggers++;
                 }
             }
-
-            let msg = `<h3>Positive Indicators: ${positiveTriggers} / 6</h3>`;
+            let msg = `<h3>ตัวบ่งชี้ที่เป็นบวก: ${positiveTriggers} / 6</h3>`;
             if (positiveTriggers >= 4) {
-                msg += "<p><strong>Result:</strong> Positive Screen. Your symptoms highly match patterns seen in adult ADHD. A formal clinical interview with a specialist is advised.</p>";
+                msg += "<p><strong>ผลลัพธ์:</strong> ผลการคัดกรองเป็นบวก อาการของคุณสอดคล้องกับรูปแบบที่พบในโรคสมาธิสั้นในผู้ใหญ่ แนะนำให้ปรึกษาผู้เชี่ยวชาญเพื่อรับการประเมินอย่างเป็นทางการ</p>";
             } else {
-                msg += "<p><strong>Result:</strong> Negative Screen. Your symptoms do not currently meet the standard baseline threshold for adult ADHD framework evaluation.</p>";
+                msg += "<p><strong>ผลลัพธ์:</strong> ผลการคัดกรองเป็นลบ อาการของคุณยังไม่ถึงเกณฑ์มาตรฐานเบื้องต้นสำหรับการประเมินโรคสมาธิสั้นในผู้ใหญ่</p>";
             }
             return msg;
         }
     },
     vanderbilt: {
-        title: "Child ADHD Screen (Parent Vanderbilt Basis)",
-        options: ["Never", "Occasionally", "Often", "Very Often"],
+        title: "แบบประเมินสมาธิสั้นในเด็ก (Vanderbilt - ฉบับผู้ปกครอง)",
+        options: ["ไม่เคย", "บางครั้ง", "บ่อย", "บ่อยมาก"],
         questions: [
-            "Fails to give close attention to details or makes careless mistakes in schoolwork.",
-            "Has difficulty sustaining attention in tasks or play activities.",
-            "Does not seem to listen when spoken to directly.",
-            "Does not follow through on instructions and fails to finish schoolwork or chores.",
-            "Has difficulty organizing tasks and activities.",
-            "Fidgets with hands or feet or squirms in seat.",
-            "Leaves seat in classroom or in other situations in which remaining seated is expected.",
-            "Is 'on the go' or acts as if 'driven by a motor.'",
-            "Talks excessively.",
-            "Blurts out answers before questions have been completed."
+            "ไม่ค่อยสนใจในรายละเอียดหรือสะเพร่าในการทำงานโรงเรียน",
+            "มีปัญหาในการตั้งสมาธิกับงานหรือการเล่น",
+            "ดูเหมือนไม่ฟังเวลาพูดด้วยโดยตรง",
+            "ทำตามคำสั่งไม่จบ หรือทำงานโรงเรียน/งานบ้านไม่เสร็จ",
+            "มีปัญหาในการจัดระเบียบงานและกิจกรรม",
+            "ยุกยิก ขยับมือเท้า หรือนั่งไม่นิ่ง",
+            "ลุกจากที่นั่งในห้องเรียนหรือสถานการณ์ที่ควรนั่งนิ่งๆ",
+            "วิ่งวุ่นหรือปีนป่ายมากเกินไปในสถานการณ์ที่ไม่เหมาะสม",
+            "พูดมากเกินไป",
+            "โพล่งคำตอบออกมาก่อนที่คำถามจะจบ"
         ],
         interpret: (answers) => {
             let inattentiveCount = 0;
             let hyperactiveCount = 0;
-
             for (let i = 0; i < answers.length; i++) {
                 if (i <= 4 && answers[i] >= 2) {
                     inattentiveCount++;
@@ -121,146 +116,157 @@ const tests = {
                     hyperactiveCount++;
                 }
             }
-
-            let msg = `<h3>Subtype Analysis Matrix:</h3>`;
-            msg += `<p>Inattentive Markers flagged: ${inattentiveCount} / 5</p>`;
-            msg += `<p>Hyperactive-Impulsive Markers flagged: ${hyperactiveCount} / 5</p>`;
-
+            let msg = `<h3>วิเคราะห์ประเภทย่อย:</h3>`;
+            msg += `<p>ตัวบ่งชี้ด้านขาดสมาธิ: ${inattentiveCount} / 5</p>`;
+            msg += `<p>ตัวบ่งชี้ด้านซน/วู่วาม: ${hyperactiveCount} / 5</p>`;
             if (inattentiveCount >= 3 || hyperactiveCount >= 3) {
-                msg += "<p><strong>Result:</strong> Screening Indicator Triggered. Behavioral responses suggest patterns aligned with pediatric ADHD. Consider reviewing these metrics with a pediatrician or child psychologist.</p>";
+                msg += "<p><strong>ผลลัพธ์:</strong> มีตัวบ่งชี้ที่ควรเฝ้าระวัง พฤติกรรมสอดคล้องกับรูปแบบของโรคสมาธิสั้นในเด็ก ควรนำข้อมูลนี้ไปปรึกษากุมารแพทย์หรือนักจิตวิทยาเด็ก</p>";
             } else {
-                msg += "<p><strong>Result:</strong> Screening Indicator Within Normal Baseline. Symptoms do not meet secondary diagnostic threshold criteria.</p>";
+                msg += "<p><strong>ผลลัพธ์:</strong> อยู่ในเกณฑ์ปกติ อาการยังไม่ถึงเกณฑ์การวินิจฉัยขั้นต้น</p>";
             }
             return msg;
         }
     },
     ad8: {
-        title: "Cognitive Impairment Screen (AD8 Informant)",
-        options: ["No, No Change", "Yes, A Change"],
+        title: "แบบคัดกรองภาวะสมองเสื่อม (AD8)",
+        options: ["ไม่มีการเปลี่ยนแปลง", "มีการเปลี่ยนแปลง"],
         questions: [
-            "Problems with judgment (e.g., problems making decisions, bad financial decisions, getting scammed)?",
-            "Less interest in hobbies/activities?",
-            "Repeats the same things over and over (questions, stories, or statements)?",
-            "Trouble learning how to use a tool, appliance, or gadget (e.g., computer, microwave, remote control)?",
-            "Forgets correct month or year?",
-            "Trouble handling complicated financial affairs (e.g., balancing checkbook, paying bills)?",
-            "Trouble remembering appointments?",
-            "Daily problems with thinking and/or memory?"
+            "มีปัญหาเรื่องการตัดสินใจ (เช่น ตัดสินใจเรื่องต่างๆ ผิดพลาด, ตัดสินใจเรื่องการเงินไม่ดี, ถูกหลอกง่าย)?",
+            "ความสนใจในงานอดิเรกหรือกิจกรรมต่างๆ ลดลง?",
+            "ถามคำถามเดิมซ้ำๆ เล่าเรื่องเดิมซ้ำๆ หรือพูดเรื่องเดิมซ้ำๆ?",
+            "มีปัญหาในการเรียนรู้วิธีการใช้เครื่องมือหรืออุปกรณ์ใหม่ๆ (เช่น คอมพิวเตอร์, ไมโครเวฟ, รีโมทคอนโทรล)?",
+            "จำเดือนหรือปีที่ถูกต้องไม่ได้?",
+            "มีปัญหาในการจัดการเรื่องการเงินที่ซับซ้อน (เช่น การจ่ายบิล, การทำบัญชี)?",
+            "มีปัญหาในการจดจำการนัดหมาย?",
+            "มีปัญหาเรื่องความคิดและ/หรือความจำในชีวิตประจำวันอย่างต่อเนื่อง?"
         ],
         interpret: (answers) => {
             let score = 0;
             for (let i = 0; i < answers.length; i++) {
                 score += answers[i];
             }
-            let msg = `<h3>Total 'Yes' Changes: ${score} / 8</h3>`;
+            let msg = `<h3>คะแนนรวม 'มีการเปลี่ยนแปลง': ${score} / 8</h3>`;
             if (score >= 2) {
-                msg += "<p><strong>Result:</strong> Cognitive Impairment Detected. Scores indicate noticeable shifts in memory or functional capacity. Further medical evaluation (e.g., MoCA/MMSE testing) is recommended to assess for MCI or early dementia.</p>";
+                msg += "<p><strong>ผลลัพธ์:</strong> ตรวจพบความเสี่ยงภาวะบกพร่องทางสติปัญญา คะแนนบ่งชี้ว่ามีการเปลี่ยนแปลงที่เห็นได้ชัดในความจำหรือความสามารถในการทำกิจวัตร แนะนำให้พบแพทย์เพื่อประเมินเพิ่มเติม</p>";
             } else {
-                msg += "<p><strong>Result:</strong> Cognitive Functioning Appears Normal. Consistent with age-baseline limits.</p>";
+                msg += "<p><strong>ผลลัพธ์:</strong> การทำงานของสมองยังอยู่ในเกณฑ์ปกติ</p>";
             }
             return msg;
         }
     },
     ldAdult: {
-        title: "Learning Disabilities Risk Checklist",
-        options: ["No / Rarely", "Yes / Often"],
+        title: "แบบสำรวจความเสี่ยงปัญหาการเรียนรู้ (Learning Disabilities)",
+        options: ["ไม่ใช่ / นานๆ ครั้ง", "ใช่ / บ่อยครั้ง"],
         questions: [
-            "Do you struggle to read unfamiliar words aloud, or read significantly slower than your peers?",
-            "Do you frequently misspell words or omit letters/syllables when writing?",
-            "Do you find it difficult to summarize a story or extract the main core structural points from text?",
-            "Do you struggle to perform basic mental math calculations or process spatial numerical intervals?",
-            "Do you frequently reverse numbers, letters, or spatial symbols (e.g., mixing up 6/9 or b/d)?",
-"Do you have trouble cleanly copying notes from a board or logically organizing thoughts on paper?",
-"Do you struggle to cleanly track or execute consecutive multi-step spoken instructions?",
-"Do you experience chronic structural difficulty managing time, estimating timelines, or meeting deadlines?"
-],
-interpret: (answers) => {
-let score = 0;
-for (let i = 0; i < answers.length; i++) {
-score += answers[i];
-}
-let msg = <h3>Identified Processing Vulnerabilities: ${score} / 8</h3>;
-if (score <= 2) msg += "Result: Low Risk. Processing indicators are within typical baseline parameters.";
-else if (score <= 4) msg += "Result: Moderate Risk. Specific vulnerabilities present. May indicate targeted, isolated neurodivergent traits or structural learning discrepancies.";
-else msg += "Result: High Risk. Strong likelihood of underlying processing variations (e.g., Dyslexia, Dyscalculia, Dysgraphia). Educational or neuropsychological testing is highly recommended.";
-return msg;
-}
-},
-tics: {
-title: "Motor & Vocal Tic Screener",
-options: ["No", "Yes"],
-questions: [
-"Have you experienced sudden, rapid, recurrent, non-rhythmic motor movements (e.g., eye blinking, head jerking, shoulder shrugging)?",
-"Have you experienced sudden, rapid, recurrent, non-rhythmic vocalizations (e.g., throat clearing, sniffing, grunting, repeating words)?",
-"If you answered yes to either question above, have these tics occurred consistently for more than 1 structural year?",
-"Did these involuntary movements or vocal sounds begin before your 18th birthday?"
-],
-interpret: (answers) => {
-// Evaluates positions explicitly via a clean shift loop to stop markdown clipping
-const hasMotor = answers[0] === 1;
-const hasVocal = answers[1] === 1;
-const chronicDuration = answers[2] === 1;
-const onsetBefore18 = answers[3] === 1;
-let msg = "Tic Profile Interpretation:";
-if (hasMotor && hasVocal && chronicDuration && onsetBefore18) {
-msg += "Result: Matches clinical criteria pattern for Tourette's Disorder framework. Evaluation by a neurologist or psychiatrist is advised.";
-} else if ((hasMotor || hasVocal) && chronicDuration && onsetBefore18) {
-msg += "Result: Matches clinical criteria pattern for Persistent (Chronic) Motor or Vocal Tic Disorder. Clinical validation recommended.";
-} else if ((hasMotor || hasVocal) && !chronicDuration && onsetBefore18) {
-msg += "Result: Matches structural presentation pattern for Provisional Tic Disorder (symptoms active for less than one year continuous).";
-} else {
-msg += "Result: Screening results do not establish standard core diagnostic tic condition profiles. Ensure symptoms are investigated to rule out any underlying secondary physical origins.";
-}
-return msg;
-}
-}
+            "คุณมีปัญหาในการอ่านคำที่ไม่คุ้นเคยออกเสียง หรืออ่านช้ากว่าเพื่อนรุ่นเดียวกันอย่างเห็นได้ชัดหรือไม่?",
+            "คุณสะกดคำผิดบ่อยครั้ง หรือลืมตัวอักษร/พยางค์เวลาเขียนหรือไม่?",
+            "คุณพบว่าเป็นเรื่องยากในการสรุปเรื่องราวหรือดึงใจความสำคัญจากข้อความหรือไม่?",
+            "คุณมีปัญหาในการคำนวณเลขในใจหรือการประมวลผลระยะห่างของตัวเลขหรือไม่?",
+            "คุณสลับตัวเลข ตัวอักษร หรือสัญลักษณ์บ่อยๆ หรือไม่ (เช่น สับสนระหว่าง 6/9 หรือ b/d)?",
+            "คุณมีปัญหาในการลอกข้อความจากกระดานหรือการจัดระเบียบความคิดลงบนกระดาษหรือไม่?",
+            "คุณมีปัญหาในการติดตามหรือทำตามคำสั่งที่พูดต่อเนื่องหลายขั้นตอนหรือไม่?",
+            "คุณมีปัญหาเรื้อรังในการบริหารจัดการเวลา การประมาณเวลา หรือการทำงานให้ทันกำหนดหรือไม่?"
+        ],
+        interpret: (answers) => {
+            let score = 0;
+            for (let i = 0; i < answers.length; i++) {
+                score += answers[i];
+            }
+            let msg = `<h3>ตัวบ่งชี้ความเสี่ยง: ${score} / 8</h3>`;
+            if (score <= 2) msg += "<p><strong>ผลลัพธ์:</strong> ความเสี่ยงต่ำ ตัวบ่งชี้การประมวลผลอยู่ในเกณฑ์ปกติ</p>";
+            else if (score <= 4) msg += "<p><strong>ผลลัพธ์:</strong> ความเสี่ยงปานกลาง พบความเปราะบางในบางด้าน อาจบ่งชี้ถึงลักษณะเฉพาะบางประการของการเรียนรู้</p>";
+            else msg += "<p><strong>ผลลัพธ์:</strong> ความเสี่ยงสูง มีความเป็นไปได้สูงที่จะมีปัญหาด้านการประมวลผล (เช่น โรคการเรียนรู้บกพร่อง หรือ LD) แนะนำให้เข้ารับการทดสอบทางจิตวิทยาการศึกษา</p>";
+            return msg;
+        }
+    },
+    tics: {
+        title: "แบบคัดกรองอาการกระตุก (Motor & Vocal Tic Screener)",
+        options: ["ไม่ใช่", "ใช่"],
+        questions: [
+            "คุณเคยมีอาการขยับตัวที่เกิดขึ้นทันที รวดเร็ว ซ้ำๆ และไม่เป็นจังหวะ (เช่น กะพริบตา, สะบัดหน้า, ยักไหล่) หรือไม่?",
+            "คุณเคยมีอาการเปล่งเสียงที่เกิดขึ้นทันที รวดเร็ว ซ้ำๆ และไม่เป็นจังหวะ (เช่น กระแอม, สูดจมูก, ทำเสียงในลำคอ, พูดซ้ำคำ) หรือไม่?",
+            "หากตอบ 'ใช่' ในข้อใดข้อหนึ่งข้างต้น อาการเหล่านี้เกิดขึ้นต่อเนื่องมานานกว่า 1 ปีหรือไม่?",
+            "อาการเหล่านี้เริ่มเกิดขึ้นก่อนอายุ 18 ปีหรือไม่?"
+        ],
+        interpret: (answers) => {
+            const hasMotor = answers[0] === 1;
+            const hasVocal = answers[1] === 1;
+            const chronicDuration = answers[2] === 1;
+            const onsetBefore18 = answers[3] === 1;
+            let msg = "<h3>การแปลผลอาการกระตุก:</h3>";
+            if (hasMotor && hasVocal && chronicDuration && onsetBefore18) {
+                msg += "<p><strong>ผลลัพธ์:</strong> เข้าข่ายเกณฑ์การวินิจฉัยโรคทูเร็ตต์ (Tourette's Disorder) แนะนำให้พบประสาทแพทย์หรือจิตแพทย์เพื่อรับการประเมิน</p>";
+            } else if ((hasMotor || hasVocal) && chronicDuration && onsetBefore18) {
+                msg += "<p><strong>ผลลัพธ์:</strong> เข้าข่ายเกณฑ์การวินิจฉัยโรคอาการกระตุกเรื้อรัง (Persistent Motor or Vocal Tic Disorder) แนะนำให้พบแพทย์เพื่อรับการประเมิน</p>";
+            } else if ((hasMotor || hasVocal) && !chronicDuration && onsetBefore18) {
+                msg += "<p><strong>ผลลัพธ์:</strong> เข้าข่ายรูปแบบของ Provisional Tic Disorder (อาการยังไม่ถึง 1 ปี)</p>";
+            } else {
+                msg += "<p><strong>ผลลัพธ์:</strong> ผลการคัดกรองยังไม่เข้าเกณฑ์มาตรฐานของกลุ่มโรคอาการกระตุก หากอาการรบกวนการใช้ชีวิตควรปรึกษาแพทย์</p>";
+            }
+            return msg;
+        }
+    }
 };
+
 function switchTest() {
-const selectedKey = document.getElementById("test-selector").value;
-loadTest(selectedKey);
-document.getElementById("results-card").classList.add("hidden");
+    const selectedKey = document.getElementById("test-selector").value;
+    loadTest(selectedKey);
+    document.getElementById("results-card").classList.add("hidden");
 }
+
 function loadTest(testKey) {
-const test = tests[testKey];
-const container = document.getElementById("questions-container");
-container.innerHTML = "";
-test.questions.forEach((qText, qIdx) => {
-let html = <div class="question-block"><p class="question-text"><strong>Q${qIdx + 1}.</strong> ${qText}</p><div class="options-group">;
-test.options.forEach((optText, oIdx) => {
-html += `
-`;
-});
-html += </div></div>;
-container.innerHTML += html;
-});
+    const test = tests[testKey];
+    const container = document.getElementById("questions-container");
+    container.innerHTML = "";
+    
+    test.questions.forEach((qText, qIdx) => {
+        let html = `<div class="question-block">
+            <p class="question-text"><strong>ข้อที่ ${qIdx + 1}.</strong> ${qText}</p>
+            <div class="options-group">`;
+            
+        test.options.forEach((optText, oIdx) => {
+            html += `
+                <label style="display: block;">
+                    <input type="radio" name="q${qIdx}" value="${oIdx}"> ${optText}
+                </label>`;
+        });
+        
+        html += `</div></div>`;
+        container.innerHTML += html;
+    });
 }
+
 function calculateScore() {
-const selector = document.getElementById("test-selector");
-const currentKey = selector.value;
-const currentTest = tests[currentKey];
-const answers = [];
-let allAnswered = true;
-for (let i = 0; i < currentTest.questions.length; i++) {
-const selected = document.querySelector(input[name="q${i}"]:checked);
-if (!selected) {
-allAnswered = false;
-break;
+    const selector = document.getElementById("test-selector");
+    const currentKey = selector.value;
+    const currentTest = tests[currentKey];
+    const answers = [];
+    let allAnswered = true;
+    
+    for (let i = 0; i < currentTest.questions.length; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (!selected) {
+            allAnswered = false;
+            break;
+        }
+        answers.push(parseInt(selected.value));
+    }
+    
+    if (!allAnswered) {
+        alert("โปรดตอบคำถามให้ครบทุกข้อก่อนคำนวณผลลัพธ์");
+        return;
+    }
+    
+    const interpretationHtml = currentTest.interpret(answers);
+    document.getElementById("interpretation-display").innerHTML = interpretationHtml;
+    document.getElementById("results-card").classList.remove("hidden");
+    document.getElementById("results-card").scrollIntoView({ behavior: 'smooth' });
 }
-answers.push(parseInt(selected.value));
-}
-if (!allAnswered) {
-alert("Please answer all questions before generating your screening report.");
-return;
-}
-const interpretationHtml = currentTest.interpret(answers);
-document.getElementById("interpretation-display").innerHTML = interpretationHtml;
-document.getElementById("results-card").classList.remove("hidden");
-document.getElementById("results-card").scrollIntoView({ behavior: 'smooth' });
-}
-// Global invocation mapping rules
+
+// เรียกใช้เมื่อโหลดหน้าเว็บ
 window.onload = () => {
-const selector = document.getElementById("test-selector");
-if(selector) {
-loadTest(selector.value);
-}
+    const selector = document.getElementById("test-selector");
+    if(selector) {
+        loadTest(selector.value);
+    }
 };
